@@ -6,6 +6,7 @@ import { handleKeyDown } from '../../tetrisUtility/handleKeyDown';
 // import TetrisHome from './tetrisHome/TetrisHome';
 import Matrix from './matrix/Matrix';
 import Modal from 'react-modal';
+import PlayButton from './playButton/PlayButton';
 import move from '../../tetrisUtility/movement/move';
 import { styles } from './tetris-styles';
 
@@ -13,13 +14,15 @@ class Tetris extends React.Component {
     constructor(props) {
         super(props);
         var current_piece = generatePiece();
+        this.gameboy = React.createRef();
         this.state = {
             board: generateBoard(current_piece),
             current_piece,
             score: 0,
             showModal: false,
             intervalId: null,
-            timerStart: false,
+            animationStartHome: false,
+            animationStartMatrix: false,
         }
     }
 
@@ -28,11 +31,13 @@ class Tetris extends React.Component {
         document.addEventListener('keydown', (e) => {
             const { current_piece, board } = this.state;
             handleKeyDown(e, current_piece, board, this.updateBoard, this.handleOpenModal, this.updateScore, this.getModal, this.getTimerStart);
-        })
+        });
+        this.gameboy.current.addEventListener('animationend', this.setAnimationStartMatrix);
     }
 
     componentWillUnmount() {
         document.removeEventListener('keydown', handleKeyDown);
+        this.gameboy.current.removeEventListener('animationend', this.setAnimationStartMatrix);
     }
 
     updateBoard = ( current_piece, board ) => {
@@ -69,15 +74,52 @@ class Tetris extends React.Component {
         return this.state.timerStart;
     }
 
-    play = () => {
+    startGame = () => {
         var intervalId = setInterval(() => {
             const { current_piece, board, intervalId } = this.state;
             move.moveDown(current_piece, board, this.updateBoard, this.handleOpenModal, this.updateScore, intervalId);
         }, 500);
         this.setState({
             intervalId,
-            timerStart: true,
         })
+    }
+
+    setAnimationStartHome = (e) => {
+        e.stopPropagation();
+        this.setState({
+            animationStartHome: true,
+        })
+    }
+
+    setAnimationStartMatrix = () => {
+        this.setState({
+            animationStartMatrix: true,
+        })
+    }
+
+    getAnimationStartMatrix = () => {
+        return this.state.animationStartMatrix;
+    }
+
+    isAnimationStart = {
+        gameboy: () => {
+            return this.state.animationStartHome ? css(styles.gameboyAnimate) : css(styles.gameboy);
+        },
+        screen: () => {
+            return this.state.animationStartHome ? css(styles.screenAnimate): css(styles.screen);
+        },
+        display: () => {
+            return this.state.animationStartHome ? css(styles.displayFade): css(styles.display);
+        },
+        controllerShade: () => {
+            return this.state.animationStartHome ? css(styles.controllerShadeAnimate): css(styles.controllerShade);
+        },
+        dpad: () => {
+            return this.state.animationStartHome ? css(styles.dpadAnimate): css(styles.dpad);
+        },
+        btns: () => {
+            return this.state.animationStartHome ? css(styles.btnsAnimate): css(styles.btns);
+        },
     }
 
     render() {
@@ -88,15 +130,17 @@ class Tetris extends React.Component {
 
         return (
             <div>
-                <div className={css(styles.gameboy)}>
-                    <div className={css(styles.screen)}><Matrix board={board} getTimerStart={this.getTimerStart} /></div>
-                    <div className={css(styles.controllerShade)}></div>
-                    <div className={css(styles.dpad)}></div>
-                    <div className={css(styles.btns)}></div>
+                <div ref={this.gameboy} className={this.isAnimationStart.gameboy()}>
+                    <div className={this.isAnimationStart.screen()}>
+                        <Matrix board={board} getAnimationStartMatrix={this.getAnimationStartMatrix} startGame={this.startGame} />
+                    </div>
+                    <div className={this.isAnimationStart.display()}>
+                        <PlayButton setAnimationStartHome={this.setAnimationStartHome} />
+                    </div>
+                    <div className={this.isAnimationStart.controllerShade()}></div>
+                    <div className={this.isAnimationStart.dpad()}></div>
+                    <div className={this.isAnimationStart.btns()}></div>
                 </div>
-
-                {/* <TetrisHome play={this.play} getTimerStart={this.getTimerStart} /> */}
-
                 <Modal 
                     isOpen={showModal} >
                     <p>Hello from Modal</p>
