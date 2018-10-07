@@ -4,21 +4,27 @@ import { generatePiece } from "./generatePiece";
 import { isNextPieceCollision } from "../collision/isNextPieceCollision";
 import { lock } from '../lock/lock';
 
-export const nextPiece = (piece, board, setState, openModal, setScore, intervalId = null) => {
+const SET_TRUE = true;
+const SET_FALSE = false;
+
+export const nextPiece = (piece, board, setState, setScore, setGameEnd, setGameStart, handleOpenModal, intervalId) => {
     board = generateBoard(piece, board);
-    setState(piece, board);
     if(!isGameOver(piece, board)) {
         lock(board, setScore);
-        var nextPiece = generatePiece();
-        isNextPieceCollision(nextPiece, board);
-        var newBoard = generateBoard(nextPiece, board);
-        setState(nextPiece, newBoard);
-        if(nextPiece.erased) {
-            openModal();
+        piece = generatePiece();
+        isNextPieceCollision(piece, board);
+        board = generateBoard(piece, board);
+        setState(piece, board);
+        if(piece.erased) {
+            setGameEnd(SET_TRUE);
+            setGameStart(SET_FALSE);
+            handleOpenModal();
             clearInterval(intervalId);
         }
     } else {
-        openModal();
+        setGameEnd(SET_TRUE);    
+        setGameStart(SET_FALSE);  
+        handleOpenModal();
         clearInterval(intervalId);
     }
 }

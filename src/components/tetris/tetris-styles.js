@@ -27,7 +27,7 @@ const gameboy = {
         position: 'absolute',
         width: GAMEBOY_WIDTH - 75,
         height: 30,
-        left: 30,
+        left: 37,
         borderLeft: '7px solid #01cffe',
         borderRight: '7px solid #01cffe',
         content: '""',
@@ -41,12 +41,19 @@ const gameboyAnimation = {
         height: GAMEBOY_HEIGHT,
     }
 };
-
+const gameboyReverseAnimation = {
+    '0%': {
+        height: GAMEBOY_HEIGHT,
+    },
+    '100%': {
+        height: 600,
+    }
+}
 
 const screen = {
     position: 'absolute',
     width: GAMEBOY_WIDTH - 75,
-    height: 275, //400
+    height: 275,
     left: 38,
     top: 65,
     background: '#777',
@@ -72,6 +79,14 @@ const screenAnimation = {
         height: 450,
     }
 };
+const screenReverseAnimation = {
+    '0%': {
+        height: 450,
+    },
+    '100%': {
+        height: 275,
+    }
+}
 const screenAfterAnimation = {
     '0%': {
         top: 125,
@@ -80,6 +95,14 @@ const screenAfterAnimation = {
         top: 200,
     }
 };
+const screenAfterReverseAnimation = {
+    '0%': {
+        top: 200,
+    },
+    '100%': {
+        top: 125,
+    }
+}
 const screenAfterAnimate = {
     ':after': {
         position: 'absolute',
@@ -95,6 +118,21 @@ const screenAfterAnimate = {
         animationFillMode: 'forwards',
     },
 }
+const screenAfterReverseAnimate = {
+    ':after': {
+        position: 'absolute',
+        height: 10,
+        width: 10,
+        left: 17,
+        top: 200,
+        borderRadius: '100%',
+        background: "#B00",
+        content: '""',
+        animationName: screenAfterReverseAnimation,
+        animationDuration: '3s',
+        animationFillMode: 'forwards',
+    },
+}
 
 
 const display = {
@@ -105,6 +143,7 @@ const display = {
     marginLeft: -113,
     top: 90,
     background: '#ae9b32',
+    boxShadow: 'inset 3px 3px rgba(0, 0, 0, 0.1)',
 };
 const displayFadeAnimation = {
     '0%': {
@@ -114,12 +153,20 @@ const displayFadeAnimation = {
         opacity: 0,
     }
 };
+const displayAnimation = {
+    '0%': {
+        opacity: 0,
+    },
+    '100%': {
+        opacity: 1,
+    }
+}
 
 const controllerShade = {
     position: 'absolute',
     width: 110,
     height: 110,
-    top: 365, // 565
+    top: 365,
     left: 40,
     background: '#0191b2',
     borderRadius: '100%',
@@ -161,6 +208,14 @@ const controllerShadeAnimation = {
         top: 565,
     }
 };
+const controllerShadeReverseAnimation = {
+    '0%': {
+        top: 565,
+    },
+    '100%': {
+        top: 365,
+    },
+}
 
 const dpad = {
     position: 'absolute',
@@ -200,6 +255,14 @@ const dpadAnimation = {
         top: 570,
     }
 };
+const dpadReverseAnimation = {
+    '0%': {
+        top: 570,
+    },
+    '100%': {
+        top: 370,
+    }
+}
 
 const btns = {
     position: 'absolute',
@@ -231,6 +294,92 @@ const btnsAnimation = {
         top: 579,
     }
 };
+const btnsReverseAnimation = {
+    '0%': {
+        top: 579,
+    },
+    '100%': {
+        top: 378,
+    }
+}
+
+const modal = {
+    position: 'absolute',
+    height: 410,
+    width: 250,
+    top: 130,
+    // left: '50%',
+    marginLeft: -123,
+    background: '#01b4dd',
+    border: '1px solid rgb(204, 204, 204)',
+    borderRadius: 10,
+    overflow: 'hidden',
+}
+
+const modalFrame = {
+    position: 'absolute',
+    height: 410,
+    width: 200,
+    left: 24,
+    borderLeft: '7px solid #01cffe',
+    borderRight: '7px solid #01cffe',
+    
+    ':after': {
+        position: 'absolute',
+        width: 250,
+        height: 350,
+        top: 30,
+        left: -31,
+        background: '#01b4dd',
+        borderTop: '7px solid #01cffe',
+        borderBottom: '7px solid #01cffe',
+        content: '""',
+    },
+}
+
+const modalBtn = {
+    position: 'absolute',
+    fontSize: '1.25em',
+    fontWeight: 500,
+    textAlign: 'center',
+    cursor: 'pointer',
+    height: 40,
+    width: 130,
+    left: '50%',
+    marginLeft: -65,
+    border: 'none',
+    borderRadius: 10,
+    background: '#a93671',
+    color: '#e6e6e6',
+    boxShadow: 'inset 0px 0px 5px 3px #74254e',
+
+    ':focus': {
+        outline: 'none',
+    },
+
+    ':hover': {
+        background:'#9b3168'
+    },
+
+    ':active': {
+        boxShadow: 'inset 0px 0px 5px 5px #e09ec0',
+        transform: 'translateY(2px)',
+        color: '#f9ecf2',
+    }
+
+}
+const playAgainBtn = {
+    ...modalBtn,
+    top: 110,
+}
+const homeBtn = {
+    ...modalBtn,
+    top: 170,
+}
+const statsBtn = {
+    ...modalBtn,
+    top: 230,
+}
 
 export const styles = StyleSheet.create({
     gameboy,
@@ -238,8 +387,16 @@ export const styles = StyleSheet.create({
         ...gameboy,
         animationName: gameboyAnimation,
         animationDuration: '3s',
+        animationFillMode: 'forwards', 
+    },
+    gameboyReverseAnimate: {
+        ...gameboy,
+        height: GAMEBOY_HEIGHT,
+        animationName: gameboyReverseAnimation,
+        animationDuration: '3s',
         animationFillMode: 'forwards',
     },
+
     screen: {
         ...screen,
         ...screenAfter,
@@ -251,6 +408,15 @@ export const styles = StyleSheet.create({
         animationDuration: '3s',
         animationFillMode: 'forwards',
     },
+    screenReverseAnimate: {
+        ...screen,
+        height: 450,
+        ...screenAfterReverseAnimate,
+        animationName: screenReverseAnimation,
+        animationDuration: '3s',
+        animationFillMode: 'forwards',
+    },
+
     display,
     displayFade: {
         ...display,
@@ -258,6 +424,13 @@ export const styles = StyleSheet.create({
         animationDuration: '3s',
         animationFillMode: 'forwards',
     },
+    displayAnimate: {
+        ...display,
+        animationName: displayAnimation,
+        animationDuration: '3s',
+        animationFillMode: 'forwards',
+    },
+
     controllerShade,
     controllerShadeAnimate: {
         ...controllerShade,
@@ -265,6 +438,14 @@ export const styles = StyleSheet.create({
         animationDuration: '3s',
         animationFillMode: 'forwards',
     },
+    controllerShadeReverseAnimate: {
+        ...controllerShade,
+        top: 565,
+        animationName: controllerShadeReverseAnimation,
+        animationDuration: '3s',
+        animationFillMode: 'forwards',
+    },
+
     dpad,
     dpadAnimate: {
         ...dpad,
@@ -272,11 +453,32 @@ export const styles = StyleSheet.create({
         animationDuration: '3s',
         animationFillMode: 'forwards',
     },
+    dpadReverseAnimate: {
+        ...dpad,
+        top: 570,
+        animationName: dpadReverseAnimation,
+        animationDuration: '3s',
+        animationFillMode: 'forwards',
+    },
+
     btns,
     btnsAnimate: {
         ...btns,
         animationName: btnsAnimation,
         animationDuration: '3s',
         animationFillMode: 'forwards',
-    }
+    },
+    btnsReverseAnimate: {
+        ...btns,
+        top: 579,
+        animationName: btnsReverseAnimation,
+        animationDuration: '3s',
+        animationFillMode: 'forwards',
+    },
+    
+    modal,
+    modalFrame,
+    playAgainBtn,
+    homeBtn,
+    statsBtn,
 });

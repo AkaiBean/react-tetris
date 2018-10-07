@@ -6,13 +6,16 @@ const button = {
     left: '50%',
     marginLeft: -65,
     top: 75,
-    background: '#ae9b32',
-    border: '3px dashed black',
-    borderRadius: 5,
-    fontFamily: 'Arial',
+    background: '#a93671',
+    border: 'none',
+    borderRadius: 10,
     fontSize: '1.25em',
+    fontWeight: 500,
     userSelect: 'none',
     cursor: 'pointer',
+    color: '#e6e6e6',
+    boxShadow: 'inset 0px 0px 5px 3px #74254e',
+
 
     ':focus': {
         outline: 'none',
@@ -20,13 +23,15 @@ const button = {
 }
 const playButton = {
     ...button,
-    
+
     ':hover': {
-        background:'#8a7c28'
+        background:'#9b3168'
     },
 
     ':active': {
-        transform: 'translateY(4px)',
+        boxShadow: 'inset 0px 0px 5px 5px #e09ec0',
+        transform: 'translateY(2px)',
+        color: '#f9ecf2',
     } ,
 }
 
@@ -41,13 +46,29 @@ const fade = {
     }
 }
 
+const animate = {
+    '0%': {
+        opacity: 0,
+    },
+    '100%': {
+        opacity: 1,
+    }
+}
+
 export const styles = StyleSheet.create({
     playButton,
     playButtonFade: {
         ...button,
         cursor: 'auto',
         animationName: fade,
-        animationDuration: '3s',
+        animationDuration: '1s',
         animationFillMode: 'forwards',
     },
+    playButtonAnimate: {
+        ...playButton,
+        cursor: 'auto',
+        animationName: animate,
+        animationDuration: '3s',
+        animationFillMode: 'forwards',
+    }
 });

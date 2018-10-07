@@ -12,6 +12,8 @@ const matrix = {
     left: '50%',
     marginLeft: -(CANVAS_WIDTH/2),
     top: 20,
+    boxShadow: '0px 0px 10px 10px rgba(0, 0, 0, 0.1)',
+    
 };
 const matrixAnimation = {
     '0%': {
@@ -22,14 +24,29 @@ const matrixAnimation = {
     },
 };
 
-const hidden = {
-    visibility: 'hidden',
+const matrixDisappear = {
+    '0%': {
+        opacity: 1,
+    },
+    '100%': {
+        opacity: 0,
+    }
 };
 
+const hidden = {
+    visibility: 'hidden',
+}
+
 export const styles = StyleSheet.create({
-    matrix: {
+    matrixHidden: {
         ...matrix,
         ...hidden,
+    },
+    matrixFade: {
+        ...matrix,
+        animationName: matrixDisappear,
+        animationDuration: '1s',
+        animationFillMode: 'forwards',
     },
     matrixAnimate: {
         ...matrix,

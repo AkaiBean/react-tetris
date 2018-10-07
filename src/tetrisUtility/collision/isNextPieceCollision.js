@@ -15,11 +15,10 @@ export const isNextPieceCollision = (piece, board) => {
                     piece.row = piece.row - 1;
                 }
                 newRow = piece.row + r;
-                if(newRow < 0) {
-                    piece.pattern[r][c] = 0;
+                if(newRow < 0 && piece.pattern[r][c] > 0) {
                     piece.erased = true;
                 }
             }
         }
-    } 
+    }
 }

@@ -2,23 +2,39 @@ import React from 'react';
 import config from '../../../tetrisUtility/config';
 import { css } from 'aphrodite/no-important';
 import { styles } from './matrix-styles';
+import { resetBoard } from '../../../tetrisUtility/board/resetBoard';
 
 const [BOARD_WIDTH, BOARD_HEIGHT] = config.boardSize;
 const BLOCK_SIZE = config.blockSize;
 const CANVAS_HEIGHT =  BLOCK_SIZE * BOARD_HEIGHT;
 const CANVAS_WIDTH = BLOCK_SIZE * BOARD_WIDTH;
 const BORDER_COLOR = config.borderColor;
+const SET_TRUE = true;
+const SET_FALSE = false;
 
 class Matrix extends React.Component {
     constructor(props) {
         super(props);
         this.canvas = React.createRef();
         this.canvasContainer = React.createRef();
+        
     }
+
 
     componentDidMount() {
         this.drawBoard(this.props.board);
-        this.canvasContainer.current.addEventListener('animationend', this.props.startGame);
+        this.canvasContainer.current.addEventListener('animationend', (e) => {
+            e.stopPropagation();
+            if(!this.props.getGameStart() && !this.props.getGameEnd()) {
+                this.props.startGame();
+            } else {
+                resetBoard(this.props.board, this.props.updateBoard);
+                this.props.setAnimationStartFade(SET_FALSE);
+                this.props.setAnimationStartHome(SET_FALSE);
+                this.props.setAnimationStartShrink(SET_TRUE);
+                this.props.setAnimationStartDisplay(SET_TRUE);
+            }
+        });
     }
 
     componentWillUnmount() {
@@ -47,7 +63,15 @@ class Matrix extends React.Component {
     }
 
     isAnimationStart = () => {
-        return this.props.getAnimationStartMatrix() ? css(styles.matrixAnimate) : css(styles.matrix);
+        var className;
+        if(this.props.getAnimationStartMatrix()) {
+            className = css(styles.matrixAnimate);
+        } else if(this.props.getAnimationStartFade()) {
+            className = css(styles.matrixFade);
+        } else {
+            className = css(styles.matrixHidden);
+        }
+        return className;
     }
 
     render() {

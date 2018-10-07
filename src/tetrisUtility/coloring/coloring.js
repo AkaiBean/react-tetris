@@ -8,7 +8,7 @@ const colorAssign = (piece, board, customColor = null) => {
     }
     pattern.forEach((_, rIndex) => {
         pattern[rIndex].forEach((_, cIndex) => {
-            if(pattern[rIndex][cIndex]) {
+            if(pattern[rIndex][cIndex] && (row + rIndex) >= 0) {
                 board[row + rIndex][col + cIndex] = customColor;
             }
         });
