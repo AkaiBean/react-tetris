@@ -5,7 +5,6 @@ const GAMEBOY_BLOCK = config.gameboyBlock;
 const GAMEBOY_HEIGHT = GAMEBOY_BLOCK * HEIGHT;
 const GAMEBOY_WIDTH = GAMEBOY_BLOCK * WIDTH;
 
-
 const gameboy = {
     position: 'relative',
     margin: '50px auto',
@@ -14,24 +13,6 @@ const gameboy = {
     background: '#01b4dd',
     borderRadius: '20px 20px 80px 20px',
     boxShadow: '7px 7px rgba(0, 0, 0, 0.1)',
-    
-    ':before': {
-        position: 'absolute',
-        width: GAMEBOY_WIDTH,
-        height: 30,
-        borderBottom: '7px solid #01cffe',
-        content: '""',
-    },
-
-    ':after': {
-        position: 'absolute',
-        width: GAMEBOY_WIDTH - 75,
-        height: 30,
-        left: 37,
-        borderLeft: '7px solid #01cffe',
-        borderRight: '7px solid #01cffe',
-        content: '""',
-    },
 };
 const gameboyAnimation = {
     '0%': {
@@ -48,6 +29,20 @@ const gameboyReverseAnimation = {
     '100%': {
         height: 600,
     }
+}
+const gameboyLineVertical = {
+    position: 'absolute',
+    width: GAMEBOY_WIDTH - 75,
+    height: 30,
+    left: 37,
+    borderLeft: '7px solid #01cffe',
+    borderRight: '7px solid #01cffe',
+}
+const gameboyLineHorizontal = {
+    position: 'absolute',
+    width: GAMEBOY_WIDTH,
+    height: 30,
+    borderBottom: '7px solid #01cffe',
 }
 
 const screen = {
@@ -308,7 +303,7 @@ const modal = {
     height: 410,
     width: 250,
     top: 130,
-    // left: '50%',
+    left: '50%',
     marginLeft: -123,
     background: '#01b4dd',
     border: '1px solid rgb(204, 204, 204)',
@@ -396,6 +391,8 @@ export const styles = StyleSheet.create({
         animationDuration: '3s',
         animationFillMode: 'forwards',
     },
+    gameboyLineVertical,
+    gameboyLineHorizontal,
 
     screen: {
         ...screen,

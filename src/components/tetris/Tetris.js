@@ -8,10 +8,12 @@ import PlayButton from './playButton/PlayButton';
 import move from '../../tetrisUtility/movement/move';
 import Modal from 'react-modal';
 import { styles } from './tetris-styles';
+import { scoreBoardStyles } from './scoreBoard-styles';
 import { resetBoard } from '../../tetrisUtility/board/resetBoard';
 
 const SET_TRUE = true;
 const SET_FALSE = false;
+const RESET_SCORE = 0;
 
 class Tetris extends React.Component {
     constructor(props) {
@@ -80,6 +82,16 @@ class Tetris extends React.Component {
         this.setState(prevState => ({
             score: prevState.score + newScore,
         }))
+    }
+
+    setScore = (score) => {
+        this.setState({
+            score,
+        })
+    }
+
+    getScore = () => {
+        return this.state.score;
     }
 
     handleOpenModal = () => {
@@ -239,12 +251,14 @@ class Tetris extends React.Component {
     playAgainBtnOnClickHandler = () => {
         this.handleCloseModal();
         resetBoard(this.state.board, this.updateBoard);
+        this.setScore(RESET_SCORE);
         this.setGameEnd(SET_FALSE);
         this.startGame();
     }
 
     homeBtnOnClickHandler = () => {
         this.handleCloseModal();
+        this.setScore(RESET_SCORE);
         this.setAnimationStartMatrix(SET_FALSE);
         this.setAnimationStartFade(SET_TRUE);
         this.setStartDisable(SET_TRUE);
@@ -258,6 +272,13 @@ class Tetris extends React.Component {
         return (
             <div>
                 <div ref={this.gameboy} className={this.isAnimationStart.gameboy()}>
+                    <div className={css(styles.gameboyLineVertical)}></div>
+                    <div className={css(styles.gameboyLineHorizontal)}></div>
+                    <div className={css(scoreBoardStyles.scoreBoard)}>
+                        <div className={css(scoreBoardStyles.frames)}></div>
+                        <div className={css(scoreBoardStyles.title)}>Score</div>
+                        <div className={css(scoreBoardStyles.bevel)}>{this.getScore()}</div>
+                    </div>
                     <div className={this.isAnimationStart.screen()}>
                         <Matrix 
                             board={board}
