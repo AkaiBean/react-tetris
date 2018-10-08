@@ -5,6 +5,7 @@ import { generateBoard } from '../../tetrisUtility/board/generateBoard';
 import { handleKeyDown } from '../../tetrisUtility/handleKeyDown';
 import Matrix from './matrix/Matrix';
 import PlayButton from './playButton/PlayButton';
+import Timer from './timer/Timer';
 import move from '../../tetrisUtility/movement/move';
 import Modal from 'react-modal';
 import { styles } from './tetris-styles';
@@ -24,6 +25,10 @@ class Tetris extends React.Component {
             board: generateBoard(current_piece),
             current_piece,
             score: 0,
+            elapsed: 0,
+            startTimer: false,
+            startTime: null,
+            resetTime: false,
             intervalId: null,
             animationStartHome: false,
             animationStartShrink: false,
@@ -53,6 +58,7 @@ class Tetris extends React.Component {
                 this.getGameStart,
                 this.handleOpenModal,
                 this.state.intervalId,
+                this.setStartTimer,
                 );
         });
         this.gameboy.current.addEventListener('animationend', (e) => {
@@ -60,9 +66,6 @@ class Tetris extends React.Component {
             if(this.getAnimationStartHome() && !this.getAnimationStartShrink()) {
                 this.setAnimationStartMatrix(SET_TRUE);
             } 
-            // else {
-            //     this.setAnimationStartDisplay(SET_FALSE);
-            // }
         });
     }
 
@@ -92,6 +95,18 @@ class Tetris extends React.Component {
 
     getScore = () => {
         return this.state.score;
+    }
+
+    setStartTimer = (startTimer) => {
+        this.setState({
+            startTimer,
+        })
+    }
+
+    setResetTimer = (resetTime) => {
+        this.setState({
+            resetTime,
+        })
     }
 
     handleOpenModal = () => {
@@ -128,11 +143,14 @@ class Tetris extends React.Component {
     startGame = () => {
         var intervalId = setInterval(() => {
             const { current_piece, board, intervalId } = this.state;
-            move.moveDown(current_piece, board, this.updateBoard, this.updateScore, this.setGameEnd, this.setGameStart, this.handleOpenModal, intervalId);
+            move.moveDown(current_piece, board, this.updateBoard, this.updateScore, this.setGameEnd, this.setGameStart, this.handleOpenModal, intervalId, this.setStartTimer);
         }, 500);
         this.setState({
             intervalId,
-            gameStart: true,
+            gameStart: SET_TRUE,
+            startTimer: SET_TRUE,
+            startTime: Date.now(),
+            resetTime: SET_FALSE,
         })
     }
 
@@ -253,6 +271,7 @@ class Tetris extends React.Component {
         resetBoard(this.state.board, this.updateBoard);
         this.setScore(RESET_SCORE);
         this.setGameEnd(SET_FALSE);
+        this.setResetTimer(SET_TRUE);
         this.startGame();
     }
 
@@ -262,6 +281,7 @@ class Tetris extends React.Component {
         this.setAnimationStartMatrix(SET_FALSE);
         this.setAnimationStartFade(SET_TRUE);
         this.setStartDisable(SET_TRUE);
+        this.setResetTimer(SET_TRUE);
     }
 
     render() {
@@ -279,6 +299,7 @@ class Tetris extends React.Component {
                         <div className={css(scoreBoardStyles.title)}>Score</div>
                         <div className={css(scoreBoardStyles.bevel)}>{this.getScore()}</div>
                     </div>
+                    <Timer getStartTimer={this.state.startTimer} getResetTimer={this.state.resetTime} startTime={this.state.startTime} />
                     <div className={this.isAnimationStart.screen()}>
                         <Matrix 
                             board={board}

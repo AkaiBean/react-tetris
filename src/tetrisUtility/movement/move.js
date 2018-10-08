@@ -10,11 +10,11 @@ const move = (direction, prev_piece, prev_board, setState) => {
     setState(current_piece, board);
 }
 
-const moveDown = (piece, board, setState, setScore, setGameEnd, setGameStart, handleOpenModal, intervalId) => {
+const moveDown = (piece, board, setState, setScore, setGameEnd, setGameStart, handleOpenModal, intervalId, setStartTimer) => {
     if(!isMoveCollision(piece, 0, 1, board)) {
         move(Direction.DOWN, piece, board, setState);
     } else {
-        nextPiece(piece, board, setState, setScore, setGameEnd, setGameStart, handleOpenModal, intervalId);
+        nextPiece(piece, board, setState, setScore, setGameEnd, setGameStart, handleOpenModal, intervalId, setStartTimer);
     }
 }
 

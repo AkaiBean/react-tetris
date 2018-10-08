@@ -7,7 +7,7 @@ import { lock } from '../lock/lock';
 const SET_TRUE = true;
 const SET_FALSE = false;
 
-export const nextPiece = (piece, board, setState, setScore, setGameEnd, setGameStart, handleOpenModal, intervalId) => {
+export const nextPiece = (piece, board, setState, setScore, setGameEnd, setGameStart, handleOpenModal, intervalId, setStartTimer) => {
     board = generateBoard(piece, board);
     if(!isGameOver(piece, board)) {
         lock(board, setScore);
@@ -18,12 +18,14 @@ export const nextPiece = (piece, board, setState, setScore, setGameEnd, setGameS
         if(piece.erased) {
             setGameEnd(SET_TRUE);
             setGameStart(SET_FALSE);
+            setStartTimer(SET_FALSE);
             handleOpenModal();
             clearInterval(intervalId);
         }
     } else {
         setGameEnd(SET_TRUE);    
-        setGameStart(SET_FALSE);  
+        setGameStart(SET_FALSE);
+        setStartTimer(SET_FALSE);  
         handleOpenModal();
         clearInterval(intervalId);
     }

@@ -5,7 +5,7 @@ import { nextPiece } from './piece/nextPiece';
 import move from './movement/move';
 import rotate from './movement/rotate';
 
-export const handleKeyDown = (e, piece, board, setState, setScore, setGameEnd, getGameEnd, setGameStart, getGameStart, handleOpenModal, intervalId) => {
+export const handleKeyDown = (e, piece, board, setState, setScore, setGameEnd, getGameEnd, setGameStart, getGameStart, handleOpenModal, intervalId, setStartTimer) => {
     if(getGameStart() && !getGameEnd()) {
         switch(e.keyCode) {
             case 37:
@@ -31,7 +31,7 @@ export const handleKeyDown = (e, piece, board, setState, setScore, setGameEnd, g
                 if(!isMoveCollision(piece, 0, 1, board)) {
                     move.move(Direction.DOWN, piece, board, setState);
                 } else {
-                    nextPiece(piece, board, setState, setScore, setGameEnd, setGameStart, handleOpenModal, intervalId);
+                    nextPiece(piece, board, setState, setScore, setGameEnd, setGameStart, handleOpenModal, intervalId, setStartTimer);
                 }
                 break;
             default:
